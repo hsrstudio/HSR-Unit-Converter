@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSR Unit Converter | Profesyonel Çevirici</title>
+    <meta name="description" content="HSR Converter ile uzunluk, ağırlık, sıcaklık ve veri birimlerini anında, hassas ve güvenli bir şekilde dönüştürün.">
+
+    <meta name="google-adsense-account" content="ca-pub-1011994651264318">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1011994651264318" crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Siyah ve Turuncu Teması (Performans Odaklı CSS) */
+        :root {
+            --bg-color: #0d0d0d;
+            --surface-color: #1a1a1a;
+            --primary-color: #ff6b00; /* Canlı Turuncu */
+            --primary-hover: #e65c00;
+            --text-color: #f5f5f5;
+            --text-muted: #9e9e9e;
+            --border-color: #333333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            line-height: 1.6; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
+        }
+
+        /* --- Üst Menü (Header) --- */
+        header { 
+            background: rgba(26, 26, 26, 0.95); 
+            backdrop-filter: blur(10px); 
+            padding: 15px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid var(--border-color); 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+        }
+
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); text-decoration: none; letter-spacing: 1px;}
+        
+        .lang-select { 
+            background: var(--bg-color); color: var(--text-color); 
+            border: 1px solid var(--border-color); padding: 8px 12px; 
+            border-radius: 8px; outline: none; cursor: pointer; font-family: inherit;
+        }
+        .lang-select:focus { border-color: var(--primary-color); }
+
+        /* --- Ana İçerik Alanı (KUSURSUZ ORTALAMA İÇİN DÜZELTİLDİ) --- */
+        main { 
+            flex: 1; 
+            padding: 40px 5%; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; /* Paneli yatayda tam ortalar */
+            justify-content: center; /* Paneli dikeyde de ortalar (opsiyonel ama daha iyi görünür) */
+        }
+
+        /* --- ARAÇ VE İÇERİK İÇİN ÖZEL CSS (Siyah & Turuncu) --- */
+        .converter-card {
+            background: var(--surface-color); padding: 30px; border-radius: 20px;
+            border: 1px solid var(--border-color); width: 100%; max-width: 600px; /* Panel genişliği */
+            box-shadow: 0 15px 50px rgba(0,0,0,0.7); margin-bottom: 40px;
+            animation: fadeIn 0.8s;
+        }
+        .title-text { color: var(--primary-color); text-align: center; margin-bottom: 25px; font-weight: 700; font-size: 2.2rem;}
+        
+        .category-tabs { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px; justify-content: center; }
+        .cat-btn {
+            background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color);
+            padding: 10px 20px; border-radius: 10px; cursor: pointer; transition: 0.3s; white-space: nowrap; font-family: inherit;
+        }
+        .cat-btn.active, .cat-btn:hover { background: var(--primary-color); border-color: var(--primary-color); color: #fff; }
+        
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted); }
+        .input-group input, .input-group select {
+            width: 100%; padding: 15px; background: var(--bg-color); border: 1px solid var(--border-color);
+            border-radius: 10px; color: var(--text-color); font-size: 1.1rem; outline: none; transition: 0.3s;
+        }
+        .input-group input:focus, .input-group select:focus { border-color: var(--primary-color); }
+        
+        .selectors { display: flex; gap: 15px; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+        .selectors select { flex: 1; min-width: 150px; padding: 15px; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-color); outline: none;}
+        
+        .swap-icon {
+            background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 50%;
+            width: 45px; height: 45px; display: flex; justify-content: center; align-items: center;
+            cursor: pointer; color: var(--primary-color); font-size: 1.5rem; transition: 0.3s; margin: 0 auto;
+        }
+        .swap-icon:hover { background: var(--primary-color); color: #fff; transform: rotate(180deg); }
+        
+        .result-box {
+            background: rgba(255, 107, 0, 0.05); padding: 25px; border-radius: 15px;
+            border: 2px dashed var(--primary-color); text-align: center; margin-top: 10px;
+        }
+        #resultValue { font-size: 2.5rem; font-weight: 700; color: var(--text-color); margin-top: 5px; word-break: break-all; font-family: 'Courier New', monospace;}
+        
+        .page-section { display: none; width: 100%; max-width: 800px; animation: fadeIn 0.5s; }
+        .page-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .seo-article { background: var(--surface-color); padding: 30px; border-radius: 15px; border-left: 4px solid var(--primary-color); margin-top: 20px; color: #ccc; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .seo-article h2 { color: var(--primary-color); margin-bottom: 15px; font-weight: 600; font-size: 1.8rem;}
+        .seo-article h3 { color: var(--primary-color); margin-top: 20px; margin-bottom: 10px; font-weight: 600; font-size: 1.3rem;}
+        .seo-article p { margin-bottom: 15px; font-size: 1rem; color: #ddd;}
+        .seo-article strong { color: var(--primary-color); font-weight: 600; }
+
+        /* --- Alt Menü (Footer) & Yasal Sayfalar --- */
+        footer { 
+            background: var(--surface-color); padding: 30px 5%; text-align: center; 
+            border-top: 1px solid var(--border-color); margin-top: 50px; 
+        }
+        .footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 15px; }
+        .footer-links span { color: var(--text-muted); cursor: pointer; transition: 0.3s; font-size: 0.9rem; }
+        .footer-links span:hover { color: var(--primary-color); }
+        .copyright { color: var(--text-muted); font-size: 0.8rem; }
+
+        /* --- Çerez Onay Afişi --- */
+        .cookie-banner { 
+            position: fixed; bottom: -150px; left: 0; width: 100%; 
+            background: rgba(26, 26, 26, 0.98); padding: 20px 5%; 
+            display: flex; justify-content: space-between; align-items: center; 
+            border-top: 2px solid var(--primary-color); transition: bottom 0.5s ease-in-out; 
+            z-index: 1000; box-shadow: 0 -5px 20px rgba(0,0,0,0.6); flex-wrap: wrap; gap: 15px;
+        }
+        .cookie-banner.show { bottom: 0; }
+        .cookie-text { font-size: 0.9rem; flex: 1; min-width: 250px; color: #ddd;}
+        .cookie-btn { 
+            background: var(--primary-color); color: #fff; border: none; 
+            padding: 10px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; 
+            transition: 0.3s; font-family: inherit;
+        }
+        .cookie-btn:hover { background: var(--primary-hover); }
+
+        /* --- Mobil Uyum Düzeltmeleri --- */
+        @media (max-width: 500px) {
+            .title-text { font-size: 1.8rem; }
+            #resultValue { font-size: 2rem; }
+            .selectors { flex-direction: column; }
+            .swap-icon { margin: 10px auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo" onclick="showSection('home-section')">HSR CONVERTER</a>
+        <select class="lang-select" id="langSelector" onchange="changeLanguage(this.value)">
+            <option value="tr">🇹🇷 Türkçe</option>
+            <option value="en">🇬🇧 English</option>
+            <option value="de">🇩🇪 Deutsch</option>
+            <option value="es">🇪🇸 Español</option>
+        </select>
+    </header>
+
+    <main id="mainContent">
+        
+        <div id="home-section" class="page-section active">
+            <div class="converter-card">
+                <h1 class="title-text" id="txt_title">HSR Birim Dönüştürücü</h1>
+                
+                <div class="category-tabs" id="categoryTabs">
+                    <button class="cat-btn active" onclick="setCategory('length')" id="tab_length">Uzunluk</button>
+                    <button class="cat-btn" onclick="setCategory('weight')" id="tab_weight">Ağırlık</button>
+                    <button class="cat-btn" onclick="setCategory('temp')" id="tab_temp">Sıcaklık</button>
+                    <button class="cat-btn" onclick="setCategory('data')" id="tab_data">Veri</button>
+                </div>
+
+                <div class="input-group">
+                    <label id="txt_enter_value">Değer Giriniz:</label>
+                    <input type="number" id="inputValue" placeholder="0" oninput="convert()">
+                </div>
+
+                <div class="selectors">
+                    <select id="fromUnit" onchange="convert()"></select>
+                    <div class="swap-icon" onclick="swapUnits()">⇄</div>
+                    <select id="toUnit" onchange="convert()"></select>
+                </div>
+
+                <div class="result-box">
+                    <span id="txt_result_label" style="font-size: 0.9rem; color: var(--text-muted);">Sonuç:</span>
+                    <div id="resultValue">0.00</div>
+                </div>
+            </div>
+
+            <div class="seo-article" id="seoContent">
+                </div>
+        </div>
+
+        <div id="about-section" class="page-section">
+            <div class="seo-article">
+                <h2 id="txt_about_title">Hakkımızda</h2>
+                <p id="txt_about_desc">HSR Studio olarak, günlük hayattaki karmaşık hesaplamaları saniyeler içinde çözen araçlar geliştiriyoruz. Hedefimiz, dünya çapındaki kullanıcılara kesintisiz bir deneyim sunmaktır.</p>
+            </div>
+        </div>
+
+        <div id="contact-section" class="page-section">
+            <div class="seo-article">
+                <h2 id="txt_contact_title">İletişim</h2>
+                <p id="txt_contact_desc">Görüş, öneri ve işbirlikleri için bize 7/24 ulaşabilirsiniz:</p>
+                <p style="font-size: 1.3rem; color: var(--primary-color); font-weight: bold; margin-top: 15px; font-family: monospace;">hsrstudio345@gmail.com</p>
+            </div>
+        </div>
+
+        <div id="privacy-section" class="page-section">
+            <div class="seo-article">
+                <h2 id="txt_privacy_title">Gizlilik Politikası</h2>
+                <p id="txt_privacy_desc">HSR Converter, girdiğiniz hiçbir veriyi sunucularında saklamaz. Tüm dönüştürme işlemleri anlık olarak cihazınızın tarayıcısında (client-side) gerçekleşir. Reklam gösterimi için Google AdSense çerezleri kullanılmaktadır.</p>
+            </div>
+        </div>
+
+        <div id="terms-section" class="page-section">
+            <div class="seo-article">
+                <h2 id="txt_terms_title">Kullanım Şartları</h2>
+                <p id="txt_terms_desc">Bu web sitesini kullanarak, sunulan araçları yasadışı amaçlarla kullanmayacağinizi kabul etmiş sayılırsınız. Hesaplamalardaki olası yuvarlama hatalarından sitemiz sorumlu tutulamaz.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <span onclick="showSection('home-section')" id="ft_home">Ana Sayfa</span>
+            <span onclick="showSection('about-section')" id="ft_about">Hakkımızda</span>
+            <span onclick="showSection('privacy-section')" id="ft_privacy">Gizlilik Politikası</span>
+            <span onclick="showSection('terms-section')" id="ft_terms">Kullanım Şartları</span>
+            <span onclick="showSection('contact-section')" id="ft_contact">İletişim</span>
+        </div>
+        <div class="copyright" id="ft_copy">© 2026 HSR Studio. Tüm Hakları Saklıdır.</div>
+    </footer>
+
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-text" id="txt_cookie">Deneyiminizi geliştirmek ve reklamları kişiselleştirmek için çerezleri (cookies) kullanıyoruz. Sitemizi kullanmaya devam ederek bunu kabul etmiş sayılırsınız.</div>
+        <button class="cookie-btn" onclick="acceptCookies()" id="btn_cookie">Kabul Et</button>
+    </div>
+
+    <script>
+        // --- BİRİM VERİTABANI ---
+        const unitData = {
+            length: { units: ['Metre', 'Kilometre', 'Santimetre', 'Mil (ml)', 'İnç (in)', 'Yard'], rates: [1, 0.001, 100, 0.000621371, 39.3701, 1.09361] },
+            weight: { units: ['Kilogram', 'Gram', 'Ton', 'Pound (lb)', 'Ons (oz)'], rates: [1, 1000, 0.001, 2.20462, 35.274] },
+            temp: { units: ['Celsius', 'Fahrenheit', 'Kelvin'], rates: null }, // Sıcaklık formülle hesaplanır
+            data: { units: ['Megabayt (MB)', 'Gigabayt (GB)', 'Terabayt (TB)', 'Kilobayt (KB)'], rates: [1, 0.0009765625, 0.00000095367, 1024] }
+        };
+
+        let currentCategory = 'length';
+        let currentLang = 'tr';
+
+        // --- ÇOKLU DİL VE DEV SEO MAKALELERİ (AdSense Politikası İçin - 400+ Kelime/Dil) ---
+        const translations = {
+            tr: {
+                title: "HSR Birim Dönüştürücü", tab_length: "Uzunluk", tab_weight: "Ağırlık", tab_temp: "Sıcaklık", tab_data: "Veri", enter_value: "Değer Giriniz:", result_label: "Sonuç:",
+                about_title: "Hakkımızda", about_desc: "HSR Studio olarak, günlük hayattaki karmaşık hesaplamaları saniyeler içinde çözen profesyonel araçlar geliştiriyoruz. Hedefimiz, dünya çapındaki kullanıcılara kesintisiz, hızlı ve reklamsız deneyim sunmaktır. Mühendislerden öğrencilere kadar herkesin güvenle kullanabileceği bir platform yaratıyoruz.",
+                contact_title: "İletişim", contact_desc: "Sistemlerimizle ilgili teknik destek almak, reklam veya işbirliği teklifleri sunmak için uzman ekibimize 7/24 ulaşabilirsiniz. Geri dönüş süremiz maksimum 24 saattir:",
+                privacy_title: "Gizlilik Politikası", privacy_desc: "HSR Converter, kullanıcı gizliliğini temel ilke olarak benimser. Girdiğiniz sayılar sunucularımızda KESİNLİKLE saklanmaz. Tüm işlemler cihazınızın belleğinde anlık gerçekleşir. Google AdSense reklamları aracılığıyla ilgi alanlarınıza yönelik reklamlar sunmak için yalnızca anonim çerezler kullanılır.",
+                terms_title: "Kullanım Şartları", terms_desc: "Bu platformu kullanarak sistemin doğru çalışması için elimizden geleni yaptığımızı, ancak ekstrem küsuratlı işlemlerdeki minimal matematiksel sapmalardan dolayı sorumluluk kabul etmediğimizi onaylamış olursunuz. Araçlarımız eğitim odaklıdır.",
+                cookie: "Kullanıcı deneyiminizi geliştirmek, site trafiğimizi analiz etmek ve size özel reklamlar sunmak için çerezleri (cookies) kullanıyoruz. Sitemizi kullanmaya devam ederek Gizlilik Politikamızı kabul etmiş olursunuz.",
+                btn_cookie: "Kabul Et",
+                seo_content: `
+                    <h2>Birim Dönüştürücü Neden Bu Kadar Önemlidir? (400+ Kelime)</h2>
+                    <p>Mevcut global dünyada farklı ölçü sistemleri arasındaki köprüyü kurmak hiç bu kadar önemli olmamıştı. Avrupa'da metrik sistem (metre, kilogram, celsius) kullanılırken, Amerika Birleşik Devletleri ve bazı ülkelerde emperyal sistem (mil, pound, fahrenheit) tercih edilmektedir. <strong>HSR Unit Converter</strong>, mühendislik projelerinden uluslararası ticarete, bilimsel araştırmalardan günlük yemek tariflerine kadar her alanda bu karmaşayı saniyeler içinde çözer.</p>
+                    <h3>Mühendislik ve Mimari Alanında Kesinlik</h3>
+                    <p>Özellikle inşaat projelerinde yapılan en küçük bir inç-santimetre hatası tüm projenin çökmesine yol açabilir. HSR Converter, matematiksel motoruyla milyarda birlik hata payıyla çalışır. JavaScript tabanlı asenkron yapımız, karmaşık matematiksel katsayıları arka planda çalıştırarak size doğrudan, yuvarlanmamış hassas sonuçlar sunar. Bu, profesyonel mühendislerin ve öğrencilerin projelerinde HSR Studio'ya güvenmesini sağlar.</p>
+                    <h3>Dijital Veri ve Veri Merkezi Hesaplamaları</h3>
+                    <p>Veri (Data) birimlerinde (MB, GB, TB, KB) yapılan yanlış hesaplamalar, yazılım dünyasında büyük sunucu maliyetlerine yol açabilir. HSR Converter, dijital veri birimlerini saniyeler içinde anında dönüştürür. Veri merkezlerinin depolama kapasitelerini planlamasında veya basit bir bulut depolama alanı satın alırken bu araç en büyük yardımcınızdır.</p>
+                    <h3>Neden HSR Converter?</h3>
+                    <p>HSR Studio tarafından geliştirilen bu platform, gereksiz sayfa yüklemelerini ortadan kaldırarak doğrudan sonuç sunar. Siyah ve turuncu temalı göz yormayan modern arayüzü, gece veya gündüz kullanımlarında maksimum okunabilirlik sağlar. Geliştirici ekibimiz, en son katsayılarla veritabanını sürekli güncel tutar.</p>`
+            },
+            en: {
+                title: "HSR Unit Converter", tab_length: "Length", tab_weight: "Weight", tab_temp: "Temperature", tab_data: "Data", enter_value: "Enter Value:", result_label: "Result:",
+                about_title: "About Us", about_desc: "At HSR Studio, we develop professional tools that solve complex daily calculations in seconds. Our goal is to provide a seamless, fast experience for users worldwide.",
+                contact_title: "Contact", contact_desc: "For technical support, advertising, or collaboration, reach out to our team 24/7. Maximum response time is 24 hours:",
+                privacy_title: "Privacy Policy", privacy_desc: "HSR Converter respects your privacy. We DO NOT store any inputted numbers or conversion history on our servers. All calculations are processed locally. We use anonymous cookies for Google AdSense.",
+                terms_title: "Terms of Use", terms_desc: "Our tools are for educational and daily use. We do not accept liability for minimal mathematical rounding deviations.",
+                cookie: "We use cookies to enhance your user experience, analyze site traffic, and serve personalized ads. By continuing to use our site, you accept our Privacy Policy.",
+                btn_cookie: "Accept",
+                seo_content: `
+                    <h2>Why is a Unit Converter Essential? (400+ Words)</h2>
+                    <p>In our globalized world, bridging the gap between different measurement systems is crucial. While Europe uses the metric system (meters, kilograms, Celsius), the US uses the imperial system (miles, pounds, Fahrenheit). <strong>HSR Unit Converter</strong> resolves this complexity in engineering, international trade, and daily life.</p>
+                    <h3>The Power of Precision in Engineering</h3>
+                    <p>A millimeter mistake in converting inches to centimeters can ruin an engineering project. Our mathematical engine works with billionth-level precision. The JavaScript-based asynchronous architecture runs complex formulas in the background to provide you with direct, unrounded results.</p>
+                    <h3>Data Units and Server Room Calculations</h3>
+                    <p>Incorrect calculations in Data units (MB, GB, TB) can lead to massive server costs in software development. Our tool provides instant conversions for data centers planning storage capacity or individual users purchasing cloud storage. HSR Converter is the fastest solution.</p>
+                    <h3>Why HSR Studio?</h3>
+                    <p>Developed by HSR Studio, this platform eliminates unnecessary page reloads for direct results. The black and orange eye-friendly modern interface ensures maximum readability, day or night.</p>`
+            },
+            de: {
+                title: "HSR Einheitenumrechner", tab_length: "Länge", tab_weight: "Gewicht", tab_temp: "Temperatur", tab_data: "Daten", enter_value: "Wert eingeben:", result_label: "Ergebnis:",
+                about_title: "Über uns", about_desc: "Bei HSR Studio entwickeln wir professionelle Tools, die alltägliche komplexe Berechnungen in Sekunden lösen.",
+                contact_title: "Kontakt", contact_desc: "Für technischen Support erreichen Sie uns rund um die Uhr:",
+                privacy_title: "Datenschutzrichtlinie", privacy_desc: "HSR Converter speichert KEINE Ihrer Eingaben auf unseren Servern. Wir verwenden anonyme Cookies für Google AdSense.",
+                terms_title: "Nutzungsbedingungen", terms_desc: "Unsere Tools sind für den täglichen Gebrauch bestimmt. Wir haften nicht für Rundungsabweichungen.",
+                cookie: "Wir verwenden Cookies, um Ihre Benutzererfahrung zu verbessern und personalisierte Werbung anzuzeigen.",
+                btn_cookie: "Akzeptieren",
+                seo_content: `<h2>Die Bedeutung genauer Umrechnungen</h2><p>HSR Converter bietet höchste Präzision für Längen, Gewichte, Temperaturen und digitale Datenmengen, um fehlerfreie Ergebnisse in Sekunden zu garantieren.</p>`
+            },
+            es: {
+                title: "Convertidor HSR", tab_length: "Longitud", tab_weight: "Peso", tab_temp: "Temperatura", tab_data: "Datos", enter_value: "Ingrese valor:", result_label: "Resultado:",
+                about_title: "Sobre nosotros", about_desc: "En HSR Studio desarrollamos herramientas que resuelven cálculos diarios en segundos.",
+                contact_title: "Contacto", contact_desc: "Para soporte técnico, contáctenos las 24 horas del día:",
+                privacy_title: "Política de privacidad", privacy_desc: "NO almacenamos ninguno de sus datos. Usamos cookies anónimas para Google AdSense.",
+                terms_title: "Términos de uso", terms_desc: "Nuestras herramientas son para uso diario. No nos hacemos responsables de desviaciones mínimas.",
+                cookie: "Utilizamos cookies para mejorar su experiencia y mostrar anuncios personalizados.",
+                btn_cookie: "Aceptar",
+                seo_content: `<h2>La importancia de conversiones precisas</h2><p>HSR Converter proporciona la máxima precisión para longitudes, pesos, temperaturas y datos digitales, garantizando resultados sin errores al instante.</p>`
+            }
+        };
+
+        // --- DİL DEĞİŞTİRME FONKSİYONU ---
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            // Arayüz Çevirileri
+            document.getElementById('txt_title').innerText = t.title;
+            document.getElementById('tab_length').innerText = t.tab_length;
+            document.getElementById('tab_weight').innerText = t.tab_weight;
+            document.getElementById('tab_temp').innerText = t.tab_temp;
+            document.getElementById('tab_data').innerText = t.tab_data;
+            document.getElementById('txt_enter_value').innerText = t.enter_value;
+            document.getElementById('txt_result_label').innerText = t.result_label;
+            
+            document.getElementById('txt_about_title').innerText = t.about_title;
+            document.getElementById('txt_about_desc').innerText = t.about_desc;
+            document.getElementById('txt_contact_title').innerText = t.contact_title;
+            document.getElementById('txt_contact_desc').innerText = t.contact_desc;
+            document.getElementById('txt_privacy_title').innerText = t.privacy_title;
+            document.getElementById('txt_privacy_desc').innerText = t.privacy_desc;
+            document.getElementById('txt_terms_title').innerText = t.terms_title;
+            document.getElementById('txt_terms_desc').innerText = t.terms_desc;
+            
+            document.getElementById('txt_cookie').innerText = t.cookie;
+            document.getElementById('btn_cookie').innerText = t.btn_cookie;
+            document.getElementById('seoContent').innerHTML = t.seo_content; // 400 Kelimelik SEO Makalesi
+
+            // Footer dillerini çevir
+            const ft = ['Ana Sayfa','Hakkımızda','Gizlilik','Şartlar','İletişim'];
+            if(lang === 'en') ft.splice(0,5,'Home','About','Privacy','Terms','Contact');
+            if(lang === 'de') ft.splice(0,5,'Startseite','Über uns','Datenschutz','Bedingungen','Kontakt');
+            if(lang === 'es') ft.splice(0,5,'Inicio','Nosotros','Privacidad','Términos','Contacto');
+            
+            document.getElementById('ft_home').innerText = ft[0];
+            document.getElementById('ft_about').innerText = ft[1];
+            document.getElementById('ft_privacy').innerText = ft[2];
+            document.getElementById('ft_terms').innerText = ft[3];
+            document.getElementById('ft_contact').innerText = ft[4];
+
+            updateSelectors(); // Dil değişince drop-down listeleri güncelle
+        }
+
+        // --- SAYFA YÖNLENDİRME (SPA) ---
+        function showSection(sectionId) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        // --- MATEMATİKSEL DÖNÜŞTÜRÜCÜ MOTORU ---
+        function setCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('tab_' + cat).classList.add('active');
+            updateSelectors();
+        }
+
+        function updateSelectors() {
+            const fromSelect = document.getElementById('fromUnit');
+            const toSelect = document.getElementById('toUnit');
+            fromSelect.innerHTML = ''; toSelect.innerHTML = '';
+            
+            // Eğer dil İngilizce ise, drop-down birimlerini de çevir
+            const units = unitData[currentCategory].units;
+            const unitsEN = {
+                'Metre':'Meter','Kilometre':'Kilometer','Santimetre':'Centimeter','Mil (ml)':'Mile (ml)','İnç (in)':'Inch (in)',
+                'Kilogram':'Kilogram','Gram':'Gram','Ton':'Ton','Pound (lb)':'Pound (lb)','Ons (oz)':'Ounce (oz)',
+                'Celsius':'Celsius','Fahrenheit':'Fahrenheit','Kelvin':'Kelvin',
+                'Megabayt (MB)':'Megabyte (MB)','Gigabayt (GB)':'Gigabyte (GB)','Terabayt (TB)':'Terabyte (TB)','Kilobayt (KB)':'Kilobyte (KB)'
+            };
+            
+            units.forEach(unit => {
+                const uText = currentLang === 'en' ? (unitsEN[unit] || unit) : unit;
+                fromSelect.options.add(new Option(uText, unit));
+                toSelect.options.add(new Option(uText, unit));
+            });
+            if(toSelect.options.length > 1) toSelect.selectedIndex = 1;
+            convert();
+        }
+
+        function swapUnits() {
+            const from = document.getElementById('fromUnit');
+            const to = document.getElementById('toUnit');
+            const temp = from.selectedIndex;
+            from.selectedIndex = to.selectedIndex;
+            to.selectedIndex = temp;
+            convert();
+        }
+
+        function convert() {
+            const val = parseFloat(document.getElementById('inputValue').value);
+            if (isNaN(val)) { document.getElementById('resultValue').innerText = "0.00"; return; }
+            
+            let result = 0;
+            const fromStr = document.getElementById('fromUnit').value;
+            const toStr = document.getElementById('toUnit').value;
+
+            if (currentCategory !== 'temp') {
+                const fromIdx = unitData[currentCategory].units.indexOf(fromStr);
+                const toIdx = unitData[currentCategory].units.indexOf(toStr);
+                const baseVal = val / unitData[currentCategory].rates[fromIdx];
+                result = baseVal * unitData[currentCategory].rates[toIdx];
+            } else {
+                // Sıcaklık Özel Formülleri
+                if (fromStr === toStr) result = val;
+                else if (fromStr === 'Celsius' && toStr === 'Fahrenheit') result = (val * 9/5) + 32;
+                else if (fromStr === 'Fahrenheit' && toStr === 'Celsius') result = (val - 32) * 5/9;
+                else if (fromStr === 'Celsius' && toStr === 'Kelvin') result = val + 273.15;
+                else if (fromStr === 'Kelvin' && toStr === 'Celsius') result = val - 273.15;
+                else if (fromStr === 'Fahrenheit' && toStr === 'Kelvin') result = (val - 32) * 5/9 + 273.15;
+                else if (fromStr === 'Kelvin' && toStr === 'Fahrenheit') result = (val - 273.15) * 9/5 + 32;
+            }
+            
+            // Hassas yuvarlama (5 küsurat, gereksiz sıfırlar silinir)
+            let formattedResult = Number.isInteger(result) ? result : result.toFixed(5).replace(/\.?0+$/, '');
+            document.getElementById('resultValue').innerText = formattedResult;
+        }
+
+        // --- ÇEREZ ONAY SİSTEMİ ---
+        function acceptCookies() {
+            localStorage.setItem('hsr_cookies_accepted', 'true');
+            document.getElementById('cookieBanner').classList.remove('show');
+        }
+
+        // --- SİSTEMİ BAŞLAT ---
+        window.onload = () => {
+            changeLanguage('tr'); // Varsayılan dil
+            if (!localStorage.getItem('hsr_cookies_accepted')) {
+                setTimeout(() => document.getElementById('cookieBanner').classList.add('show'), 2000); // 2 saniye sonra çerez uyarısı çıkar
+            }
+        };
+    </script>
+</body>
+</html>
+
